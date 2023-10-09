@@ -63,7 +63,16 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
         APICall.shared.getTrailer(with: titleName) { [weak self] result in
             switch result {
             case .success(let videoElement):
-                self?.delegate?.searchResultViewControllerDidTapItem(TitlePreviewViewModel(title: title.original_title ?? "", youtubeView: videoElement, titleOverview: title.overview ?? ""))
+                self?.delegate?.searchResultViewControllerDidTapItem(TitlePreviewViewModel(
+                    title: title.original_title ?? "",
+                    youtubeView: videoElement,
+                    titleOverview: title.overview ?? "",
+                    adult: title.adult,
+                    genre_ids: title.genre_ids,
+                    popularity: title.popularity,
+                    release_date: title.release_date ?? "Đang cập nhật",
+                    vote_average: title.vote_average,                  
+                    vote_count: Int(title.vote_count ?? 0)))
             case .failure(let error):
                 print(error.localizedDescription)
             }

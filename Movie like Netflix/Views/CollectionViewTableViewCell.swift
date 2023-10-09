@@ -99,7 +99,15 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
                 guard let strongSelf = self else {
                     return
                 }
-                let viewModel = TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: titleOverview)
+                let viewModel = TitlePreviewViewModel(title: titleName,
+                                                      youtubeView: videoElement,
+                                                      titleOverview: titleOverview,
+                                                      adult: title?.adult ?? true,
+                                                      genre_ids: title?.genre_ids ?? [0],
+                                                      popularity: title?.popularity ?? 0,
+                                                      release_date: title?.release_date ?? "Đang cập nhật",
+                                                      vote_average: title?.vote_average ?? 0,
+                                                      vote_count: title?.vote_count ?? 0)
                 self?.delegate?.collectionViewTableViewCellDidTapCell(strongSelf, viewModel: viewModel)
             case .failure(let error):
                 print(error.localizedDescription)

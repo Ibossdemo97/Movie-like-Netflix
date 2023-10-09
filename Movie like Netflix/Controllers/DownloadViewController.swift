@@ -87,14 +87,26 @@ extension DownloadViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let title = titles[indexPath.row]
+        
         guard let titleName = title.original_title ?? title.original_title else { return }
+        
+        let genre = title.genre_ids
+        let genreArray: [Int]? = [Int(truncatingIfNeeded: genre)]
         
         APICall.shared.getTrailer(with: titleName) { [weak self] result in
             switch result {
             case .success(let videoElement):
                 DispatchQueue.main.async {
                     let vc = TitlePreviewViewController()
-                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: title.overview ?? ""))
+                    vc.configure(with: TitlePreviewViewModel(title: titleName,
+                                                             youtubeView: videoElement,
+                                                             titleOverview: title.overview ?? "Đang cập nhật",
+                                                             adult: title.adult,
+                                                             genre_ids: genreArray,
+                                                             popularity: title.popularity,
+                                                             release_date: title.release_date ?? "Đang cập nhật",
+                                                             vote_average: title.vote_average,
+                                                             vote_count: Int(title.vote_count)))
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             case .failure(let error):
